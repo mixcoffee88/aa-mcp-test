@@ -100,34 +100,14 @@ npm run build
    - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
    - Linux: `~/.config/Claude/claude_desktop_config.json`
 
-3. 설정 파일에 다음 내용 추가:
-```json
-{
-  "mcpServers": {
-    "adobe-analytics": {
-      "command": "npx",
-      "args": ["ts-node", "https://github.com/mixcoffee88/aa-mcp-test.git/src/index.ts"],
-      "cwd": "/path/to/aa-mcp-test",
-      "env": {
-        "ADOBE_CLIENT_ID": "your_client_id",
-        "ADOBE_CLIENT_SECRET": "your_client_secret",
-        "ADOBE_JWT": "your_jwt_token",
-        "ADOBE_COMPANY_ID": "your_company_id",
-        "ADOBE_REPORT_SUITE_ID": "your_report_suite_id"
-      }
-    }
-  }
-}
-```
-
-또는 빌드된 버전을 사용하려면:
+3. MCP 설정 파일에 다음 내용 추가:
 ```json
 {
   "mcpServers": {
     "adobe-analytics": {
       "command": "node",
-      "args": ["https://github.com/mixcoffee88/aa-mcp-test.git/build/index.js"],
-      "cwd": "/path/to/aa-mcp-test",
+      "args": ["--loader", "ts-node/esm", "src/index.ts"],
+      "cwd": "C:\\ibank\\mcp_workspace\\aa-mcp-test",
       "env": {
         "ADOBE_CLIENT_ID": "your_client_id",
         "ADOBE_CLIENT_SECRET": "your_client_secret",
@@ -141,3 +121,4 @@ npm run build
 ```
 
 참고: `cwd` 경로는 클론한 프로젝트의 실제 경로로 변경해야 합니다.
+
