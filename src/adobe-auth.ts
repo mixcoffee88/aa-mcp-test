@@ -1,0 +1,82 @@
+/**
+ * Adobe 인증 모듈
+ * 
+ * JWT를 사용하여 Adobe API 인증을 처리하는 모듈입니다.
+ * 액세스 토큰을 관리하고 필요할 때 새로운 토큰을 발급받습니다.
+ */
+
+import axios from 'axios';
+
+// 인증에 필요한 설정 인터페이스
+interface AdobeAuthConfig {
+  clientId: string;      // Adobe API 클라이언트 ID
+  clientSecret: string;  // Adobe API 클라이언트 시크릿
+  jwt: string;          // JWT 토큰
+  companyId: string;    // Adobe 회사 ID
+}
+
+export class AdobeAuth {
+  private config: AdobeAuthConfig;
+  private accessToken: string | null = null;
+  private tokenExpiry: Date | null = null;
+
+  constructor() {
+    // 환경 변수에서 인증 정보 로드
+    this.config = {
+      clientId: process.env.ADOBE_CLIENT_ID || '',
+      clientSecret: process.env.ADOBE_CLIENT_SECRET || '',
+      jwt: process.env.ADOBE_JWT || '',
+      companyId: process.env.ADOBE_COMPANY_ID || ''
+    };
+
+    // 필수 환경 변수 확인
+    if (!this.config.clientId || !this.config.clientSecret || !this.config.jwt || !this.config.companyId) {
+      throw new Error('필수 Adobe 인증 환경 변수가 설정되지 않았습니다');
+    }
+  }
+
+  /**
+   * Adobe API 액세스 토큰을 가져옵니다.
+   * 토큰이 만료되었거나 없는 경우 새로운 토큰을 발급받습니다.
+   */
+  async getAccessToken(): Promise<string> {
+    // 유효한 토큰이 있으면 재사용
+    if (this.accessToken && this.tokenExpiry && this.tokenExpiry > new Date()) {
+      return this.accessToken;
+    }
+
+    try {
+      // JWT를 사용하여 새로운 액세스 토큰 발급
+      const response = await axios.post('https://ims-na1.adobelogin.com/ims/exchange/jwt', {
+        client_id: this.config.clientId,
+        client_secret: this.config.clientSecret,
+        jwt_token: this.config.jwt
+      });
+
+      if (!response.data.access_token) {
+        throw new Error('Adobe로부터 액세스 토큰을 받지 못했습니다');
+      }
+
+      this.accessToken = response.data.access_token;
+      this.tokenExpiry = new Date(Date.now() + (response.data.expires_in || 3600) * 1000);
+      
+      if (!this.accessToken) {
+        throw new Error('Adobe 액세스 토큰 발급에 실패했습니다');
+      }
+
+      return this.accessToken;
+    } catch (error) {
+      throw new Error('Adobe 액세스 토큰 발급에 실패했습니다');
+    }
+  }
+
+  /**
+   * Adobe 회사 ID를 반환합니다.
+   */
+  getCompanyId(): string {
+    return this.config.companyId;
+  }
+}
+
+// 싱글톤 인스턴스 생성
+export const adobeAuth = new AdobeAuth();
