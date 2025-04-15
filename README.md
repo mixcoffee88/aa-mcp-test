@@ -106,8 +106,7 @@ npm run build
   "mcpServers": {
     "adobe-analytics": {
       "command": "node",
-      "args": ["--loader", "ts-node/esm", "src/index.ts"],
-      "cwd": "C:\\ibank\\mcp_workspace\\aa-mcp-test",
+      "args": ["C:/ibank/mcp_workspace/aa-mcp-test/build/index.js"],
       "env": {
         "ADOBE_CLIENT_ID": "your_client_id",
         "ADOBE_CLIENT_SECRET": "your_client_secret",
@@ -120,5 +119,5 @@ npm run build
 }
 ```
 
-참고: `cwd` 경로는 클론한 프로젝트의 실제 경로로 변경해야 합니다.
+참고: 완료후 NPM 패키지로 배포 필요
 
