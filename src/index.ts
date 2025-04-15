@@ -204,3 +204,12 @@ main().catch((error) => {
   console.error('서버 오류:', error);
   process.exit(1);
 });
+
+// src/index.ts에 추가
+process.on('uncaughtException', (err) => {
+  console.error('⚠️ [Critical] Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('⚠️ [Critical] Unhandled Rejection at:', promise, 'reason:', reason);
+});
