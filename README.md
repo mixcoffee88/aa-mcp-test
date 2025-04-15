@@ -84,3 +84,60 @@ npm start
 - Adobe Analytics API 2.0
 
 ## 프로젝트 구조
+
+### 1. Claude Desktop 설정
+
+1. 프로젝트 클론:
+```bash
+git clone https://github.com/mixcoffee88/aa-mcp-test.git
+cd aa-mcp-test
+npm install
+npm run build
+```
+
+2. Claude Desktop의 설정 파일 위치:
+   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+   - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - Linux: `~/.config/Claude/claude_desktop_config.json`
+
+3. 설정 파일에 다음 내용 추가:
+```json
+{
+  "mcpServers": {
+    "adobe-analytics": {
+      "command": "npx",
+      "args": ["ts-node", "https://github.com/mixcoffee88/aa-mcp-test.git/src/index.ts"],
+      "cwd": "/path/to/aa-mcp-test",
+      "env": {
+        "ADOBE_CLIENT_ID": "your_client_id",
+        "ADOBE_CLIENT_SECRET": "your_client_secret",
+        "ADOBE_JWT": "your_jwt_token",
+        "ADOBE_COMPANY_ID": "your_company_id",
+        "ADOBE_REPORT_SUITE_ID": "your_report_suite_id"
+      }
+    }
+  }
+}
+```
+
+또는 빌드된 버전을 사용하려면:
+```json
+{
+  "mcpServers": {
+    "adobe-analytics": {
+      "command": "node",
+      "args": ["https://github.com/mixcoffee88/aa-mcp-test.git/build/index.js"],
+      "cwd": "/path/to/aa-mcp-test",
+      "env": {
+        "ADOBE_CLIENT_ID": "your_client_id",
+        "ADOBE_CLIENT_SECRET": "your_client_secret",
+        "ADOBE_JWT": "your_jwt_token",
+        "ADOBE_COMPANY_ID": "your_company_id",
+        "ADOBE_REPORT_SUITE_ID": "your_report_suite_id"
+      }
+    }
+  }
+}
+```
+
+참고: `cwd` 경로는 클론한 프로젝트의 실제 경로로 변경해야 합니다.
