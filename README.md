@@ -155,21 +155,6 @@ npm start
 }
 ```
 
-### 7. 차원 값 목록 조회
-```json
-{
-  "name": "get_dimension_values",
-  "arguments": {
-    "rsid": "your_report_suite_id",
-    "dimensionId": "page",
-    "locale": "ko_KR",
-    "search": "home",
-    "limit": 10,
-    "page": 1
-  }
-}
-```
-
 ## 개발 환경
 - Node.js
 - TypeScript
