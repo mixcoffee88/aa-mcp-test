@@ -67,7 +67,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             },
             dimension: {
               type: "string",
-              description: "조회할 차원"
+              description: "조회할 차원 (예: 국가, 기기 유형 등 분석 기준이 되는 항목)"
             },
             limit: {
               type: "number",
@@ -96,7 +96,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             },
             dimension: {
               type: "string",
-              description: "조회할 차원"
+              description: "조회할 차원 (예: 국가, 기기 유형 등 분석 기준이 되는 항목)"
             },
             limit: {
               type: "number",
