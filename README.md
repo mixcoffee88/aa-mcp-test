@@ -15,7 +15,33 @@ Adobe Analytics API를 MCP(Model Context Protocol)를 통해 접근할 수 있�
   - 지표 및 차원 지정 가능
   - 결과 제한 설정 가능
 
-### 2. 인증
+### 2. Adobe Analytics 구성 요소 조회
+- 차원 목록 API (`/dimensions`)
+  - 사용 가능한 차원 목록 조회
+  - 세그먼트/리포트 사용 가능 여부 필터링
+  - 다국어 지원
+
+- 지표 목록 API (`/metrics`)
+  - 사용 가능한 지표 목록 조회
+  - 세그먼트/리포트 사용 가능 여부 필터링
+  - 다국어 지원
+
+- 세그먼트 목록 API (`/segments`)
+  - 사용 가능한 세그먼트 목록 조회
+  - 게시된 세그먼트 필터링
+  - 페이지네이션 지원
+
+- 날짜 범위 목록 API (`/date-ranges`)
+  - 사전 정의된 날짜 범위 조회
+  - 게시된 날짜 범위 필터링
+  - 다국어 지원
+
+- 차원 값 목록 API (`/dimensions/{dimensionId}/values`)
+  - 특정 차원의 값 목록 조회
+  - 검색 및 페이지네이션 지원
+  - 다국어 지원
+
+### 3. 인증
 - OAuth Server-to-Server(client_credentials grant) 기반 인증
 - 액세스 토큰 자동 갱신
 - 환경 변수를 통한 설정
@@ -73,6 +99,73 @@ npm start
     "metrics": ["pageviews"],
     "dimension": "page",
     "limit": 5
+  }
+}
+```
+
+### 3. 차원 목록 조회
+```json
+{
+  "name": "get_dimensions",
+  "arguments": {
+    "rsid": "your_report_suite_id",
+    "locale": "ko_KR",
+    "segmentable": true,
+    "reportable": true
+  }
+}
+```
+
+### 4. 지표 목록 조회
+```json
+{
+  "name": "get_metrics",
+  "arguments": {
+    "rsid": "your_report_suite_id",
+    "locale": "ko_KR",
+    "segmentable": true,
+    "reportable": true
+  }
+}
+```
+
+### 5. 세그먼트 목록 조회
+```json
+{
+  "name": "get_segments",
+  "arguments": {
+    "rsid": "your_report_suite_id",
+    "locale": "ko_KR",
+    "filterByPublishedSegments": true,
+    "limit": 10,
+    "page": 1
+  }
+}
+```
+
+### 6. 날짜 범위 목록 조회
+```json
+{
+  "name": "get_date_ranges",
+  "arguments": {
+    "rsid": "your_report_suite_id",
+    "locale": "ko_KR",
+    "filterByPublishedSegments": true
+  }
+}
+```
+
+### 7. 차원 값 목록 조회
+```json
+{
+  "name": "get_dimension_values",
+  "arguments": {
+    "rsid": "your_report_suite_id",
+    "dimensionId": "page",
+    "locale": "ko_KR",
+    "search": "home",
+    "limit": 10,
+    "page": 1
   }
 }
 ```
