@@ -27,7 +27,7 @@ prompt_env_var() {
 echo "Checking environment variables..."
 prompt_env_var "ADOBE_CLIENT_ID" "Enter your Adobe API client ID"
 prompt_env_var "ADOBE_CLIENT_SECRET" "Enter your Adobe API client secret"
-prompt_env_var "ADOBE_JWT" "Enter your Adobe JWT token"
+prompt_env_var "ADOBE_SCOPE" "Enter your Adobe OAuth scope (comma separated)"
 prompt_env_var "ADOBE_COMPANY_ID" "Enter your Adobe global company ID"
 prompt_env_var "ADOBE_REPORT_SUITE_ID" "Enter your Adobe report suite ID"
 

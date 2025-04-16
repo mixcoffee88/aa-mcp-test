@@ -16,7 +16,7 @@ Adobe Analytics API를 MCP(Model Context Protocol)를 통해 접근할 수 있�
   - 결과 제한 설정 가능
 
 ### 2. 인증
-- JWT 기반 인증
+- OAuth Server-to-Server(client_credentials grant) 기반 인증
 - 액세스 토큰 자동 갱신
 - 환경 변수를 통한 설정
 
@@ -32,7 +32,7 @@ npm install
   ```env
   ADOBE_CLIENT_ID=your_client_id
   ADOBE_CLIENT_SECRET=your_client_secret
-  ADOBE_JWT=your_jwt_token
+  ADOBE_SCOPE=your_scope_1,your_scope_2
   ADOBE_COMPANY_ID=your_company_id
   ADOBE_REPORT_SUITE_ID=your_report_suite_id
   ```
@@ -110,7 +110,7 @@ npm run build
       "env": {
         "ADOBE_CLIENT_ID": "your_client_id",
         "ADOBE_CLIENT_SECRET": "your_client_secret",
-        "ADOBE_JWT": "your_jwt_token",
+        "ADOBE_SCOPE": "your_scope_1,your_scope_2",
         "ADOBE_COMPANY_ID": "your_company_id",
         "ADOBE_REPORT_SUITE_ID": "your_report_suite_id"
       }
@@ -118,6 +118,5 @@ npm run build
   }
 }
 ```
-
 참고: 완료후 NPM 패키지로 배포 필요
 

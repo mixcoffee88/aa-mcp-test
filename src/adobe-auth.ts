@@ -11,8 +11,8 @@ import axios from 'axios';
 interface AdobeAuthConfig {
   clientId: string;      // Adobe API 클라이언트 ID
   clientSecret: string;  // Adobe API 클라이언트 시크릿
-  jwt: string;          // JWT 토큰
-  companyId: string;    // Adobe 회사 ID
+  scope: string;         // OAuth scope
+  companyId: string;     // Adobe 회사 ID
 }
 
 export class AdobeAuth {
@@ -25,12 +25,12 @@ export class AdobeAuth {
     this.config = {
       clientId: process.env.ADOBE_CLIENT_ID || '',
       clientSecret: process.env.ADOBE_CLIENT_SECRET || '',
-      jwt: process.env.ADOBE_JWT || '',
+      scope: process.env.ADOBE_SCOPE || '',
       companyId: process.env.ADOBE_COMPANY_ID || ''
     };
 
     // 필수 환경 변수 확인
-    if (!this.config.clientId || !this.config.clientSecret || !this.config.jwt || !this.config.companyId) {
+    if (!this.config.clientId || !this.config.clientSecret || !this.config.scope || !this.config.companyId) {
       throw new Error('필수 Adobe 인증 환경 변수가 설정되지 않았습니다');
     }
   }
@@ -46,12 +46,18 @@ export class AdobeAuth {
     }
 
     try {
-      // JWT를 사용하여 새로운 액세스 토큰 발급
-      const response = await axios.post('https://ims-na1.adobelogin.com/ims/exchange/jwt', {
-        client_id: this.config.clientId,
-        client_secret: this.config.clientSecret,
-        jwt_token: this.config.jwt
-      });
+      // OAuth Server-to-Server 방식으로 새로운 액세스 토큰 발급
+      const params = new URLSearchParams();
+      params.append('client_id', this.config.clientId);
+      params.append('client_secret', this.config.clientSecret);
+      params.append('grant_type', 'client_credentials');
+      params.append('scope', this.config.scope);
+
+      const response = await axios.post(
+        'https://ims-na1.adobelogin.com/ims/token/v3',
+        params,
+        { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+      );
 
       if (!response.data.access_token) {
         throw new Error('Adobe로부터 액세스 토큰을 받지 못했습니다');
